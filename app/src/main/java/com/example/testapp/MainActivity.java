@@ -1,7 +1,6 @@
 package com.example.testapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -33,40 +32,50 @@ public class MainActivity extends AppCompatActivity {
         if (!isCounterOn) {
             isCounterOn = true;
             startButton.setText("STOP");
-            new Thread(new Runnable() {
+            new Thread((new Runnable() {
                 @Override
                 public void run() {
                     while (isCounterOn) {
                         counter++;
-                        switch (counter) {
-                            case 1:
-                                greenLight.setBackgroundColor(Color.GREEN);
-                                yellowLight.setBackgroundColor(Color.GRAY);
-                                redLight.setBackgroundColor(Color.GRAY);
-                                break;
-                            case 2:
-                                greenLight.setBackgroundColor(Color.GRAY);
-                                yellowLight.setBackgroundColor(Color.YELLOW);
-                                redLight.setBackgroundColor(Color.GRAY);
-                                break;
-                            case 3:
-                                greenLight.setBackgroundColor(Color.GRAY);
-                                yellowLight.setBackgroundColor(Color.GRAY);
-                                redLight.setBackgroundColor(Color.RED);
-                                counter = 0;
-                                break;
-                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                switch (counter) {
+                                    case 1:
+                                        greenLight.setBackgroundColor(Color.GREEN);
+                                        yellowLight.setBackgroundColor(Color.GRAY);
+                                        redLight.setBackgroundColor(Color.GRAY);
+                                        break;
+                                    case 2:
+                                        greenLight.setBackgroundColor(Color.GRAY);
+                                        yellowLight.setBackgroundColor(Color.YELLOW);
+                                        redLight.setBackgroundColor(Color.GRAY);
+                                        break;
+                                    case 3:
+                                        greenLight.setBackgroundColor(Color.GRAY);
+                                        yellowLight.setBackgroundColor(Color.GRAY);
+                                        redLight.setBackgroundColor(Color.RED);
+                                        counter = 0;
+                                        break;
+                                }
+                            }
+                        });
                         try {
-                            Thread.sleep(3000);
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
                 }
-            }).start();
+            })).start();
+
         } else {
             isCounterOn = false;
             startButton.setText("START");
+            greenLight.setBackgroundColor(Color.GRAY);
+            yellowLight.setBackgroundColor(Color.GRAY);
+            redLight.setBackgroundColor(Color.GRAY);
+            counter = 0;
         }
     }
 
